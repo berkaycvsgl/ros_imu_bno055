@@ -833,6 +833,7 @@ class BoschIMU:
 
         # Get linear acceleration vector data
         response = self.raw_linear_acceleration
+        x,y,z = self.get_gravity()
 
         # Get linear acceleration axis data
         raw_linear_acceleration_x = int.from_bytes(response[0:2], 'little',  signed= True) 
@@ -841,13 +842,13 @@ class BoschIMU:
 
         if self.acceleration_units == METERS_PER_SECOND:
             # Convert values to an appropriate range (section 3.6.4)
-            linear_acceleration_x = raw_linear_acceleration_x / LINEAR_SCALE
-            linear_acceleration_y = raw_linear_acceleration_y / LINEAR_SCALE
-            linear_acceleration_z = raw_linear_acceleration_z / LINEAR_SCALE
+            linear_acceleration_x = raw_linear_acceleration_x / LINEAR_SCALE + x
+            linear_acceleration_y = raw_linear_acceleration_y / LINEAR_SCALE + y
+            linear_acceleration_z = raw_linear_acceleration_z / LINEAR_SCALE + z
         
         elif self.acceleration_units == MILI_G:
             # No conversion needed
-            linear_acceleration_x = raw_linear_acceleration_x
+            linear_acceleration_x = raw_linear_acceleration_x 
             linear_acceleration_y = raw_linear_acceleration_y
             linear_acceleration_z = raw_linear_acceleration_z
         else:
@@ -886,7 +887,7 @@ class BoschIMU:
     def get_gravity(self):
 
         # Get gravity vector data
-        self.raw_gravity
+        response = self.raw_gravity
 
         # Get gravity axis data
         raw_gravity_x = int.from_bytes(response[0:2], 'little',  signed= True) 

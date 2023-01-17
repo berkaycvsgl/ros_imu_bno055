@@ -72,10 +72,10 @@ class SensorIMU:
         self.stop_request = False
 
         # Create topics
-        self.pub_imu_data = rospy.Publisher('imu/data', Imu, queue_size=1)
+        self.pub_imu_data = rospy.Publisher('imu/data0', Imu, queue_size=1)
 
         if self.use_magnetometer == True:
-            self.pub_imu_magnetometer = rospy.Publisher('imu/magnetometer', MagneticField, queue_size=1)
+            self.pub_imu_magnetometer = rospy.Publisher('imu/mag', MagneticField, queue_size=1)
         
         if self.use_temperature == True:
             self.pub_imu_temperature = rospy.Publisher('imu/temperature', Temperature, queue_size=1)
@@ -94,11 +94,11 @@ class SensorIMU:
 
         self.serial_port = rospy.get_param(self.node_name + '/serial_port','/dev/ttyUSB0')
         self.frame_id = rospy.get_param(self.node_name + '/frame_id', 'imu_link')
-        self.operation_mode_str = rospy.get_param(self.node_name + '/operation_mode', 'IMU')
+        self.operation_mode_str = rospy.get_param(self.node_name + '/operation_mode', 'M4G')
         self.oscillator_str = rospy.get_param(self.node_name + '/oscillator', 'INTERNAL')
         self.reset_orientation = rospy.get_param(self.node_name + '/reset_orientation', True)
-        self.frequency = rospy.get_param(self.node_name + '/frequency', 20)
-        self.use_magnetometer = rospy.get_param(self.node_name + '/use_magnetometer', False)
+        self.frequency = rospy.get_param(self.node_name + '/frequency', 50)
+        self.use_magnetometer = rospy.get_param(self.node_name + '/use_magnetometer', True)
         self.use_temperature = rospy.get_param(self.node_name + '/use_temperature', False)
 
         switcher = {
